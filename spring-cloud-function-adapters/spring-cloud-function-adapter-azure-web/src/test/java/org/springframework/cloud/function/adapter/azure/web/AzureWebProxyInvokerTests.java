@@ -27,19 +27,21 @@ import com.microsoft.azure.functions.HttpResponseMessage;
 import com.microsoft.azure.functions.HttpResponseMessage.Builder;
 import com.microsoft.azure.functions.HttpStatus;
 import com.microsoft.azure.functions.HttpStatusType;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 public class AzureWebProxyInvokerTests {
 
-	@Test
-	public void test() throws Exception {
+	@ParameterizedTest
+	@EnumSource(value = HttpMethod.class, names = {"GET", "POST", "PUT", "DELETE", "PATCH"})
+	public void test(HttpMethod httpMethod) throws Exception {
 		System.setProperty("MAIN_CLASS", PetStoreSpringAppConfig.class.getName());
 		AzureWebProxyInvoker proxyInvoker = new AzureWebProxyInvoker();
 		AzureWebProxyInvoker instance = proxyInvoker.getInstance(AzureWebProxyInvoker.class);
 
 		HttpRequestMessageStub<Optional<String>> request = new HttpRequestMessageStub<Optional<String>>();
 
-		request.setHttpMethod(HttpMethod.GET);
+		request.setHttpMethod(httpMethod);
 
 		request.setUri(new URI(
 				"http://localhost:7072/api/AzureWebAdapter/pets"));

@@ -48,6 +48,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Christian Tzolov
  * @author Oleg Zhurakousky
+ * @author Johannes Link
  *
  */
 public class AzureWebProxyInvoker implements FunctionInstanceInjector {
@@ -116,7 +117,7 @@ public class AzureWebProxyInvoker implements FunctionInstanceInjector {
 	@FunctionName(AZURE_WEB_ADAPTER_NAME)
 	public HttpResponseMessage execute(
 			@HttpTrigger(name = "req", methods = { HttpMethod.GET,
-					HttpMethod.POST }, authLevel = AuthorizationLevel.ANONYMOUS, route = AZURE_WEB_ADAPTER_ROUTE) HttpRequestMessage<Optional<String>> request,
+					HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.PATCH }, authLevel = AuthorizationLevel.ANONYMOUS, route = AZURE_WEB_ADAPTER_ROUTE) HttpRequestMessage<Optional<String>> request,
 			ExecutionContext context) {
 
 		context.getLogger().info("Request body is: " + request.getBody().orElse("[empty]"));
